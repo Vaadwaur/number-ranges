@@ -8,21 +8,21 @@ namespace common
 
 static constexpr inline auto const spaces = "\t\n\v\f\r ";
 
-constexpr inline void trim_begin(std::string_view& view) noexcept
+constexpr void trim_begin(std::string_view& view) noexcept
 {
 	auto pos = view.find_first_not_of(spaces);
 	auto count = std::min(pos, view.size());
 	view.remove_prefix(count);
 }
 
-constexpr inline void trim_end(std::string_view& view) noexcept
+constexpr void trim_end(std::string_view& view) noexcept
 {
 	auto back = view.find_last_not_of(spaces);
 	auto count = std::min(view.size() - back - 1, view.size());
 	view.remove_suffix(count);
 }
 
-constexpr inline void trim(std::string_view& view) noexcept
+constexpr void trim(std::string_view& view) noexcept
 {
 	trim_begin(view);
 	trim_end(view);
