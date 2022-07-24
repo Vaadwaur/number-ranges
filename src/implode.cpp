@@ -1,4 +1,5 @@
 #include "common.hpp"
+#include <cstdlib>
 // system headers
 #ifdef WIN32
 #include <winsock2.h>
@@ -15,8 +16,10 @@
 #include <tuple>
 #include <vector>
 
-static constexpr char const* const syntax =
-    R"(implode - print numeric ranges contained in input
+[[noreturn]] static void print_usage_and_exit(int exit_code)
+{
+	std::cout <<
+	    R"(implode - print numeric ranges contained in input
 SYNTAX
 	implode [OPTION] [filename...]
 
@@ -24,6 +27,7 @@ Options:
 	filename - optional path to a file
 		Everything from first-non digit on each line will be discarded
 
+	-h  this help text
 	-s  sort all input data
 
 DESCRIPTION
@@ -33,7 +37,10 @@ EXAMPLE
 	implode <(seq 120 199) <(seq 100 109) -s
 100 109 10
 120 199 80
+
 )";
+	std::exit(exit_code);
+}
 
 static bool filter_number(std::string& number) noexcept
 {
@@ -117,9 +124,9 @@ int main(int argc, char const* const* argv)
 			sort = true;
 			break;
 		case 'h':
+			print_usage_and_exit(EXIT_SUCCESS);
 		default:
-			std::cout << syntax << '\n';
-			return EXIT_FAILURE;
+			print_usage_and_exit(EXIT_FAILURE);
 		}
 	}
 
